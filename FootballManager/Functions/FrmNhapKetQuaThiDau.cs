@@ -17,10 +17,17 @@ namespace FootballManager.Functions
         /// Lấy từ cấu hình (settings) của Project
         /// </summary>
         string connectionString = FootballManager.Properties.Settings.Default.FootballManagerConnectionString;
-
         public FrmNhapKetQuaThiDau()
         {
             InitializeComponent();
+        }
+
+        private void bangDiemThiDauBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.bangDiemThiDauBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.footballManagerDataSet);
+
         }
 
         public void BangDiemThiDau()
@@ -59,14 +66,6 @@ namespace FootballManager.Functions
             }
         }
 
-        private void bangDiemThiDauBindingNavigatorSaveItem_Click(object sender, EventArgs e)
-        {
-            this.Validate();
-            this.bangDiemThiDauBindingSource.EndEdit();
-            this.tableAdapterManager.UpdateAll(this.footballManagerDataSet);
-
-        }
-
         private void FrmNhapKetQuaThiDau_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'footballManagerDataSet.BangDiemThiDau' table. You can move, or remove it, as needed.
@@ -74,22 +73,21 @@ namespace FootballManager.Functions
             BangDiemThiDau();
         }
 
-
         private void btnThem_Click(object sender, EventArgs e)
         {
             // Kiểm tra dữ liệu nhập
-            if (String.IsNullOrEmpty(tenBangComboBox.Text) || String.IsNullOrEmpty(tenDoiComboBox.Text) ||
-                String.IsNullOrEmpty(tenDoiDoiThuComboBox.Text) || String.IsNullOrEmpty(tenBangComboBox.Text) ||
-                String.IsNullOrEmpty(tenBangComboBox.Text))
+            if (String.IsNullOrEmpty(tenBangTextBox.Text) || String.IsNullOrEmpty(tenDoiTextBox.Text) ||
+                String.IsNullOrEmpty(tenDoiDoiThuTextBox.Text) || String.IsNullOrEmpty(tenBangTextBox.Text) ||
+                String.IsNullOrEmpty(tenBangTextBox.Text))
             {
                 MessageBox.Show("Vui lòng kiểm tra lại dữ liệu nhập");
                 return;
             }
 
-            String doiA = tenDoiComboBox.Text;
-            String doiB = tenDoiDoiThuComboBox.Text;
+            String doiA = tenDoiTextBox.Text;
+            String doiB = tenDoiDoiThuTextBox.Text;
 
-            string Str  = tiSoTextBox.Text;
+            string Str = tiSoTextBox.Text;
             string Str1 = Str.Split('-')[0];
             string Str2 = Str.Split('-')[1];
             string tisodao = Str2 + '-' + Str1;
@@ -132,10 +130,8 @@ namespace FootballManager.Functions
                         connection.Open();
 
                         // Truyền dữ liệu vào đúng tham số
-
-
                         command.CommandType = CommandType.Text;
-                        command.Parameters.AddWithValue("@tenbang", tenBangComboBox.Text);
+                        command.Parameters.AddWithValue("@tenbang", tenBangTextBox.Text);
                         command.Parameters.AddWithValue("@tendoi", doiA);
                         command.Parameters.AddWithValue("@tendoidoithu", doiB);
                         command.Parameters.AddWithValue("@tiso", tiSoTextBox.Text);
@@ -173,27 +169,8 @@ namespace FootballManager.Functions
                         connection1.Open();
 
                         // Truyền dữ liệu vào đúng tham số
-
-                        //string Str = tiSoTextBox.Text;
-                        //string Str1 = Str.Split('-')[0];
-                        //string Str2 = Str.Split('-')[1];
-                        //string tisodao = Str2 + '-' + Str1;
-                        //int hieuso1 = Convert.ToInt32(Str1);
-                        //int hieuso2 = Convert.ToInt32(Str2);
-                        //int diem1, diem2;
-                        //if (hieuso1 == hieuso2)
-                        //{
-                        //    diem1 = 1;
-                        //    diem2 = 1;
-                        //}
-                        //else
-                        //{
-                        //    diem1 = hieuso1;
-                        //    diem2 = hieuso2;
-                        //}
-
                         command1.CommandType = CommandType.Text;
-                        command1.Parameters.AddWithValue("@tenbang", tenBangComboBox.Text);
+                        command1.Parameters.AddWithValue("@tenbang", tenBangTextBox.Text);
                         command1.Parameters.AddWithValue("@tendoi", doiB);
                         command1.Parameters.AddWithValue("@tendoidoithu", doiA);
                         command1.Parameters.AddWithValue("@tiso", tisodao);
@@ -219,7 +196,5 @@ namespace FootballManager.Functions
                 }
             }
         }
-
-        
     }
 }
